@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Test App</title>
+    <script src="perf-monitor.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px 5px 10px 0;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #nodeContainer {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .node {
+            width: 50px;
+            height: 50px;
+            background-color: #28a745;
+            border-radius: 4px;
+        }
+        #status {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Memory Test App</h1>
+    <button onclick="addNodes()">Add 200 Nodes</button>
+    <button onclick="fillMemory()">Fill Memory with ArrayBuffer</button>
+    <button onclick="clearAll()">Clear All</button>
+    
+    <div id="nodeContainer"></div>
+    <div id="status">Ready</div>
+
+    <script>
+        let buffers = [];
+
+        function addNodes() {
+            const container = document.getElementById('nodeContainer');
+            for (let i = 0; i < 200; i++) {
+                const node = document.createElement('div');
+                node.className = 'node';
+                container.appendChild(node);
+            }
+            updateStatus(`Added 200 nodes. Total nodes: ${container.children.length}`);
+        }
+
+        function fillMemory() {
+            try {
+                for (let i = 0; i < 100; i++) {
+                    const buffer = new ArrayBuffer(10 * 1024 * 1024); // 10MB each
+                    buffers.push(buffer);
+                }
+                updateStatus(`Allocated ${buffers.length * 10}MB of memory`);
+            } catch (e) {
+                updateStatus(`Memory allocation error: ${e.message}`);
+            }
+        }
+
+        function clearAll() {
+            document.getElementById('nodeContainer').innerHTML = '';
+            buffers = [];
+            updateStatus('Cleared all nodes and memory');
+        }
+
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+    </script>
+</body>
+</html>
