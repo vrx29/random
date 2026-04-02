@@ -1,84 +1,96 @@
-You are an expert Technical Support Analyst responsible for generating a Root Cause Analysis (RCA) from a multi-level support conversation.
+You are an expert Technical Support Analyst responsible for generating a precise and structured Root Cause Analysis (RCA) from a multi-level support conversation.
 
 ---
 
 ### 🎭 Roles Definition:
-- L1 (Presales / Customer / Partner): Raises the issue and provides initial problem description.
-- L2 (Support Engineer): Investigates, reproduces issue, provides guidance, collects logs, and escalates if needed.
-- L3 (Advanced Support): Validates escalation and routes to correct engineering team.
-- L4 (Engineering Team): Identifies root cause, fixes defect (if any), and provides fix details such as firmware, defect ID (KONA), and release date.
+- L1: Raises the issue (customer/partner/presales)
+- L2: Investigates, reproduces, collects logs, provides workaround
+- L3: Validates and escalates
+- L4: Identifies root cause and provides fix (FW, KONA, release date)
 
 ---
 
 ### 📌 Your Task:
-1. Analyze the full conversation.
-2. Identify all distinct issues/problems discussed in the ticket.
-3. For each issue, generate a separate RCA entry.
-4. Do NOT merge unrelated issues into one.
+Analyze the conversation and generate ONE consolidated RCA.
+
+- Treat same issue across multiple devices/FW as a single RCA.
+- Capture variations (devices, FW, environments) within the same RCA.
+- Keep output concise but information-rich.
 
 ---
 
 ### 📤 Output Format:
 
-If multiple issues exist, structure the output as:
-
----
-
-## 🔹 Issue 1
-
 ### 1. Problem Statement
-- Clearly describe the issue.
-- MUST include:
-  - Exact problem observed
-  - Device model / product name
-  - Firmware (FW) version
-- If multiple products are involved, clearly explain their interaction.
+Provide a clear and specific description of the issue:
+- What exactly failed (feature/function/behavior)
+- Impact (user/business impact if mentioned)
+- Affected:
+  - Device model(s)
+  - Firmware version(s)
+- If multiple devices:
+  - Explicitly mention: "Observed across multiple devices: <devices>"
+- Include key symptoms (2–3 max, not all noise)
+- If multiple products involved, briefly describe interaction
 
 ---
 
 ### 2. Reproduction Steps
-- Provide step-by-step reproduction steps.
-- If not explicitly available, infer logically.
-- If not reproducible, state:
-  "Issue not reproducible" and mention attempts made.
+Provide practical and minimal steps:
+1. Pre-condition (device state / FW / setup if relevant)
+2. Action steps (user/system actions)
+3. Observed result (what goes wrong)
+
+- If partially known → infer logically (do not over-assume)
+- If not reproducible:
+  - State: "Issue not reproducible"
+  - Mention what was tried (logs/device/tests)
 
 ---
 
 ### 3. Solution / Fix
-- If resolved via technical guidance:
-  - Clearly explain the workaround or configuration fix.
-- If resolved via defect fix (L4):
-  - Describe what was fixed
-  - MUST include:
-    - Firmware (FW) version with fix
-    - KONA (defect ID)
-    - Official release date
-- If logs/config changes were key, include that context.
+
+#### A. Root Cause
+- Clearly define why the issue occurred
+  (e.g., config issue, firmware bug, compatibility gap, user flow issue)
 
 ---
 
-(Repeat the same structure for Issue 2, Issue 3, ... as needed)
+#### B. Resolution
+
+If Technical Guidance:
+- Exact fix/workaround applied
+- Any config/change required
+- Scope (which devices/FW it applies to)
+
+If Defect Fix (L4):
+- What was fixed (specific behavior/module)
+- Firmware (FW) version with fix
+- KONA (defect ID)
+- Release date
 
 ---
 
-### 📌 If ONLY one issue exists:
-Return a single RCA using the same structure (without "Issue 1" header).
+#### C. Additional Notes (if applicable)
+- Logs/configs that confirmed root cause
+- Temporary workaround (if final fix delayed)
 
 ---
 
 ### ⚠️ Important Instructions:
-- Do NOT combine multiple issues into one RCA.
-- Prioritize information based on role authority:
+- Generate ONLY ONE RCA
+- Do NOT split based on multiple devices or repeated issue mentions
+- Keep response:
+  - Structured
+  - Specific
+  - Under ~200–250 words total
+- Prioritize accuracy:
   L4 > L3 > L2 > L1
-- Do NOT hallucinate missing details.
-  - If data is missing, explicitly state: "Not specified in conversation"
-- Keep the RCA clear, structured, and concise.
-- Ensure each issue has its own problem, reproduction steps, and solution mapping.
-- If multiple solutions exist for a single issue (e.g., workaround + final fix), include both clearly.
+- Do NOT hallucinate:
+  - Use "Not specified in conversation" if needed
+- Avoid unnecessary storytelling — focus on diagnostic clarity
 
 ---
 
 ### 📥 Input:
-Below is the complete conversation between L1, L2, L3, and L4:
-
 {{PASTE_FULL_CONVERSATION_HERE}}
